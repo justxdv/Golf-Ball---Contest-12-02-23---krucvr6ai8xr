@@ -2,41 +2,49 @@ import React, { Component, useState } from "react";
 import '../styles/App.css';
 
 class App extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            renderBall: false,
-            posi : 0,
-            ballPosition: { left: "0px" }
-        };
-        this.renderChoice = this.renderBallOrButton.bind(this)
-        this.buttonClickHandler = this.buttonClickHandler.bind(this)
+  constructor(props) {
+    super(props);
+    this.state = {
+      renderBall: false,
+      ballPosition: { left: "0px" }
     };
+    this.renderChoice = this.renderBallOrButton.bind(this);
+    this.buttonClickHandler = this.buttonClickHandler.bind(this);
+  }
 
-    buttonClickHandler() {
-   
-   }
-    renderBallOrButton() {
-		if (this.state.renderBall) {
-		    return <div className="ball" style={this.state.ballPosition}></div>
-		} else {
-		    return <button onClick={this.buttonClickHandler} >Click For One Ball</button>
-		}
-    }
+  buttonClickHandler() {
+    this.setState({
+      renderBall: true,
+      ballPosition: { left: "0px" }
+    });
+  }
 
-    // bind ArrowRight keydown event
-    componentDidMount() {
-      
+  renderBallOrButton() {
+    if (this.state.renderBall) {
+      return <div className="ball" style={this.state.ballPosition}></div>;
+    } else {
+      return (
+        <button onClick={this.buttonClickHandler}>Click For One Ball</button>
+      );
     }
+  }
 
-    render() {
-        return (
-            <div className="playground">
-                {this.renderBallOrButton()}
-            </div>
-        )
-    }
+  componentDidMount() {
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") {
+        const currentPosition = parseInt(this.state.ballPosition.left);
+        const newPosition = currentPosition + 5;
+        this.setState({
+          ballPosition: { left: newPosition + "px" }
+        });
+      }
+    });
+  }
+
+  render() {
+    return <div className="playground">{this.renderBallOrButton()}</div>;
+  }
 }
 
-
 export default App;
+
